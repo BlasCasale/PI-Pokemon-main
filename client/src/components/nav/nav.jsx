@@ -1,66 +1,74 @@
-import {Link} from 'react-router-dom';
-import style from './nav.module.css';
-import {useSelector, useDispatch} from 'react-redux';
+import { Link } from 'react-router-dom';
+import './nav.module.css';
+import { useSelector, useDispatch } from 'react-redux';
 import { signOut } from '../../redux/actions';
 import { useState } from 'react';
 
-export default function (){
+const Nav = () => {
 
     const [open, setOpen] = useState(false);
-    const user = useSelector((state)=>state.user);
+    const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
-    const handleSignOut = (e)=>{
+    const handleSignOut = (e) => {
         e.preventDefault();
         dispatch(signOut());
     }
-    const handleClick = (e)=>{
+    const handleClick = (e) => {
         e.preventDefault();
-        if (open)   
+        if (open)
             setOpen(false);
-        else 
+        else
             setOpen(true);
     }
 
-    return(
+    return (
         <>
-            <div className={style.links}>
-                <Link to= '/'>
-                    <p>Landing</p>
-                </Link>
-                <Link to= '/home'>
-                    <p>Home</p>
-                </Link>
-                <Link to= '/create'>
-                    <p>Create</p>
-                </Link>
-                <Link to= '/about'>
-                    <p>About</p>
-                </Link>
-                {!!user?.mail ? <> </> : <>
-                    <Link to= '/signUp'>
-                        <p>Sign Up</p>
-                    </Link>
-                    <Link to= '/signIn'>
-                        <p>Sign In</p>
-                    </Link>
-                </>}
-                <div>
-                    {!!user?.mail ? <>
-                        <div>
-                            <button onClick={handleClick}>{user?.name[0].toUpperCase()}. {user?.lastName}</button>
-                        </div>
-                    </> : <> </>}
-                </div>
-            </div>
-            {(user?.mail && open) && <> 
-                <h3>{user?.mail}</h3>
-                    <Link to='/myProfile'><p>My profile</p></Link>
-                    <Link to='/reviews'><p>Reviews</p></Link>
-                <div className='div--btn'>
-                    <button onClick={handleSignOut}>Sign out</button>
-                </div>
-            </>}
+            <header>
+                <ul>
+                    <li>
+                        <Link to='/'>
+                            Landing
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to='/home'>
+                            Home
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to='/create'>
+                            Create
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to='/about'>
+                            About
+                        </Link>
+                    </li>
+                    {!user?.mail ? <>
+                        <li>
+                            <Link to='/signUp'>
+                                Sign Up
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to='/signIn'>
+                                Sign In
+                            </Link>
+                        </li>
+                    </> : <button onClick={handleClick}>{user?.name[0].toUpperCase()}. {user?.lastName}</button>}
+                </ul>
+                {(user?.mail && open) &&
+                    <div>
+                        <h3>{user?.mail}</h3>
+                        <button onClick={handleSignOut}>Sign out</button>
+                        <Link to='/myProfile'><p>My profile</p></Link>
+                        <Link to='/reviews'><p>Reviews</p></Link>
+                    </div>}
+            </header>
         </>
     );
-}
+};
+
+export default Nav;

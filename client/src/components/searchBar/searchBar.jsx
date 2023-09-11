@@ -1,13 +1,10 @@
+import './searchBar.css';
 
-
-export default function SearchBar ({handleChange, handleSubmit, SearchString}){
+export default function SearchBar({ handleChange, handleSubmit, SearchString }) {
     return (
-        <div>
-            <form onChange={handleChange}>
-                <input placeholder="Search" type="search" value={SearchString} id="input"/>
-                <button type="search" onClick={handleSubmit}>Search</button>
-
-            </form>
-        </div>
+        <form onChange={handleChange} className='form--search'>
+            <input placeholder="Search" type="search" value={SearchString} id="input" className='input--search'/>
+            <button type="search" onClick={handleSubmit} className='btn--form'>Search</button>
+        </form>
     );
 }

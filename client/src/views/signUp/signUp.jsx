@@ -1,13 +1,12 @@
 import FormSignUp from '../../components/form/signUp/formSignUp';
 import Nav from '../../components/nav/nav';
+import './signUp.css'
 
-const SingUp = ()=>{
+const SingUp = () => {
     return (
-        <div>
-            <Nav/>
-            <>
-                <FormSignUp/>
-            </>
+        <div className='box-signUp'>
+            <Nav />
+            <FormSignUp />
         </div>
     );
 }

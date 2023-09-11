@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { signIn } from '../../../redux/actions';
+import './formSignIn.modules.css';
 
-import {signIn} from '../../../redux/actions';
-
-const FormSignIn = ()=>{
+const FormSignIn = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -19,46 +19,47 @@ const FormSignIn = ()=>{
         password: '',
     });
 
-    const handleChange = (e)=>{
+    const handleChange = (e) => {
         setInput({
             ...input,
             [e.target.name]: e.target.value,
         });
         setError(validate({
-            ...input, [e.target.name]: e.target.value}, error));
-    }
+            ...input, [e.target.name]: e.target.value
+        }, error));
+    };
 
-    const validate = (value, error)=>{
-        const errors = {...error};
-        
+    const validate = (value, error) => {
+        const errors = { ...error };
+
         if (!value.mail) errors.mail = `*This input is mandatory.`;
-        else errors.mail= '';
+        else errors.mail = '';
 
         if (!value.password) errors.password = `*This input is mandatory.`;
-        else errors.password= '';
+        else errors.password = '';
 
         return errors;
-    }
+    };
 
-    const submitHandler = async (e)=>{
+    const submitHandler = async (e) => {
         e.preventDefault();
         try {
             //dispatch(singIn(input)).catch((error)=> setAuxError(error));
-            dispatch(signIn({...input}));
+            dispatch(signIn({ ...input }));
             setInput({
                 mail: '',
                 password: '',
             });
             navigate('/home');
-            alert(`Logged in successfully.`)
+            alert(`Logged in successfully.`);
         } catch (error) {
             alert(error.message);
-        }
-    }
+        };
+    };
 
     return (
         <>
-            <div>    
+            <div>
                 <form className="form--signIn" onSubmit={submitHandler}>
                     <div className="div--form">
                         <label htmlFor='mail' className="label">E-mail: </label>

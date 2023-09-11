@@ -1,16 +1,13 @@
 import FormSignIn from '../../components/form/signIn/formSignIn'
 import Nav from '../../components/nav/nav';
-import { useSelector } from 'react-redux';
+import './signIn.css';
 
 
-const singIn = ()=>{
-    //const user = useSelector((state)=>state.user);
+const singIn = () => {
     return (
-        <div>
-            <Nav/>
-            <>
-                <FormSignIn/>
-            </>
+        <div className='box--singIn'>
+            <Nav />
+            <FormSignIn />
         </div>
     );
 }

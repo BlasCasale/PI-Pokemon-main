@@ -40,3 +40,12 @@ padding: 0;}
   }
 }
 
+a {
+  text-decoration: none;
+  color: #fafafa;
+  font: 20px;
+  transition: 0.5s;
+}
+a:hover {
+  color: #ccc;
+}

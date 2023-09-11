@@ -9,8 +9,10 @@ import Pagination from '../../components/pagination/pagination';
 
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {getPokemons, getByName, orderByNameD, orderByNameBackD, orderByAttackD, orderByAttackBackD,  getTypes,
-    reset, filterCloudD, filterOwnD, filterBothD, filterByType} from '../../redux/actions';
+import {
+    getPokemons, getByName, orderByNameD, orderByNameBackD, orderByAttackD, orderByAttackBackD, getTypes,
+    reset, filterCloudD, filterOwnD, filterBothD, filterByType
+} from '../../redux/actions';
 import { all } from 'axios';
 import Loader from '../../components/loader/loader.jsx';
 
@@ -18,15 +20,15 @@ import Loader from '../../components/loader/loader.jsx';
 
 
 
-const Home = ()=>{
+const Home = () => {
     const dispatch = useDispatch();
 
-    const user = useSelector((state)=> state.user);
-    
-    const originals = useSelector((state)=> state.originals);
-    const allPokemons = useSelector((state)=>state.pokemons);
-    const pokemonsCopy = useSelector((state)=>state.pokemonsCopy);
-    const [searchString, setSearchString]= useState('');
+    const user = useSelector((state) => state.user);
+
+    const originals = useSelector((state) => state.originals);
+    const allPokemons = useSelector((state) => state.pokemons);
+    const pokemonsCopy = useSelector((state) => state.pokemonsCopy);
+    const [searchString, setSearchString] = useState('');
 
 
     const [currentPage, setCurrentPage] = useState(1); //estado para la pagina actual
@@ -38,32 +40,32 @@ const Home = ()=>{
 
 
     //! Ordenamientos y filtros
-    const orderByName = (e)=>{
+    const orderByName = (e) => {
         e.preventDefault();
         dispatch(orderByNameD(originals));
     }
-    const orderByNameBack = (e)=>{
+    const orderByNameBack = (e) => {
         e.preventDefault();
         dispatch(orderByNameBackD(originals))
     }
-    const orderByAttackBack = (e)=>{
+    const orderByAttackBack = (e) => {
         e.preventDefault();
         dispatch(orderByAttackBackD(originals));
     }
-    const orderByAttack = (e)=>{
+    const orderByAttack = (e) => {
         e.preventDefault();
         dispatch(orderByAttackD(originals));
     }
 
-    const filterOwn = (e)=>{
+    const filterOwn = (e) => {
         e.preventDefault();
         dispatch(filterOwnD(allPokemons));
     }
-    const filterCloud = (e)=>{
+    const filterCloud = (e) => {
         e.preventDefault();
         dispatch(filterCloudD(allPokemons));
     }
-    const filterBoth = (e)=>{
+    const filterBoth = (e) => {
         e.preventDefault();
         dispatch(filterBothD(allPokemons));
     }
@@ -79,74 +81,75 @@ const Home = ()=>{
 
 
 
-    const handleChange = (e)=>{
+    const handleChange = (e) => {
         e.preventDefault();
         setSearchString(e.target.value);
     }
 
 
-    const handleSubmit = (e)=>{
+    const handleSubmit = (e) => {
         e.preventDefault();
-        if (searchString !== ''){
+        if (searchString !== '') {
             dispatch(getByName(searchString));
             setSearchString('');
             setCurrentPage(1);
-        }else handleReset();
+        } else handleReset();
     }
 
-    const handleReset= ()=>{
+    const handleReset = () => {
         setCurrentPage(1);
         dispatch(reset(originals));
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(getPokemons())
         dispatch(getTypes())
     }, [dispatch]);
 
-    return(
-        <div className={allPokemons?.length > 0? style.home: style.loader}>
-            {allPokemons.length > 0 ? 
+    return (
+        <div className={allPokemons?.length > 0 ? style.home : style.loader}>
+            {allPokemons.length > 0 ?
                 <div >
                     <div className={style.navContainer}>
                         <Nav />
                         <div className={style.search}>
-                            <SearchBar handleChange={handleChange} handleSubmit={handleSubmit} 
-                            searchString={searchString} setCurrentPage={setCurrentPage}/>
+                            <SearchBar handleChange={handleChange} handleSubmit={handleSubmit}
+                                searchString={searchString} setCurrentPage={setCurrentPage} />
                         </div>
                         <div>
                             <button onClick={handleReset} >Reset</button>
                         </div>
-                        <Options filterOwn={filterOwn} 
-                                filterCloud={filterCloud} 
-                                orderByName={orderByName} 
-                                orderByNameBack={orderByNameBack}
-                                orderByAttack={orderByAttack} 
-                                orderByAttackBack={orderByAttackBack}
-                                filterBoth={filterBoth}
-                                filterByType={handleType}/>
+                        <Options filterOwn={filterOwn}
+                            filterCloud={filterCloud}
+                            orderByName={orderByName}
+                            orderByNameBack={orderByNameBack}
+                            orderByAttack={orderByAttack}
+                            orderByAttackBack={orderByAttackBack}
+                            filterBoth={filterBoth}
+                            filterByType={handleType} />
                     </div>
-                    
+
                     <div className={style.container}>
-                        {pokemonsCopy?.length > 1 && pokemonsCopy?.slice(firstIndex,lastIndex).map(pokemon => {
-                                return(
-                                    <Card key={pokemon.id} poke={pokemon}/>
-                                )} 
-                            )}
-                        {pokemonsCopy?.length == 1 && pokemonsCopy?.map((pokemon)=>{
-                            return(
-                                <Card key={pokemon.id} poke={pokemon}/>
-                                );
+                        {pokemonsCopy?.length > 1 && pokemonsCopy?.slice(firstIndex, lastIndex).map(pokemon => {
+                            return (
+                                <Card key={pokemon.id} poke={pokemon} />
+                            )
+                        }
+                        )}
+                        {pokemonsCopy?.length == 1 && pokemonsCopy?.map((pokemon) => {
+                            return (
+                                <Card key={pokemon.id} poke={pokemon} />
+                            );
                         })}
-                        {pokemonsCopy?.length == 0 && <img src='https://media.tenor.com/lmA7VALYIAsAAAAM/sad-pikachu.gif' alt='404 something went wrong'/>}
+                        {pokemonsCopy?.length == 0 && <img src='https://media.tenor.com/lmA7VALYIAsAAAAM/sad-pikachu.gif' alt='404 something went wrong' />}
                     </div>
-                        
-                    <Pagination page={currentPage} setPage={setCurrentPage} maximus={max}/>
-            </div> : <div className={style.loader}>
-                <Loader/>
-            </div>
+
+                    <Pagination page={currentPage} setPage={setCurrentPage} maximus={max} />
+                </div> : <div className={style.loader}>
+                    <Loader />
+                </div>
             }
-            
+
         </div>
     );
 }
